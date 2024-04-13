@@ -13,5 +13,4 @@ class User < ApplicationRecord
     self.approved_at = Time.current
     save
   end
-  
 end
