@@ -1,11 +1,18 @@
 <div>
-  <h1 class="font-bold text-4xl">LandingPage#index</h1>
-  <p>Find me in app/views/landing_page/index.html.erb</p>
+  <h1 class="mx-auto max-w-4xl font-display text-5xl font-medium tracking-tight text-slate-900 sm:text-7xl">Invest Your Money With Us and <span class=" text-blue-600">Get Amazing Profit </span></h1>
+  
+  <p class="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700"> 
+  Earn money by just sitting and trading. Trade with us!
+  Practice your Stock Marketing Strategy Skills Now!
+  </p>
 
-  <% if user_signed_in? %>
-    <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
-  <% else %>
-    <%= link_to "Sign in", new_user_session_path %>
-    <%= link_to "Sign up", new_user_registration_path %>
-  <% end %>
+  <div class="mt-10 flex justify-center gap-x-6">
+  <%= link_to "Create an account today", new_user_registration_path, class:"hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" %>
+  </div>
+
+<div class="mt-10 flex justify-center gap-x-6">
+<%= link_to "Sign in", new_user_session_path , class:"hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 text-sm text-blue-600 font-bold rounded-xl transition duration-200" %>
 </div>
+  
+</div>
+
