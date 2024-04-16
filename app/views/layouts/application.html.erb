@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>StockTradingApp</title>
+    <title>Stock Trading App</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -13,8 +13,17 @@
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
+
+  <%=  render 'partials/header' %>
+
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16 pt-20 text-center lg:pt-32">
+      <%= notice if notice %>
+      <%= alert if alert %>
+
+    <%= yield %>
+    </div>
+
   </body>
 </html>
+
+

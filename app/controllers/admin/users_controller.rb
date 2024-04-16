@@ -3,6 +3,10 @@ class Admin::UsersController < ApplicationController
         @users = User.where(admin: false)
     end
     
+    def new
+        @user = User.new
+    end
+
     # POST /admin/users (form data includes user details)
     def create
         new_user = User.new(user_params)
@@ -11,10 +15,10 @@ class Admin::UsersController < ApplicationController
         new_user.approved = true
 
         if new_user.save
-
+            redirect_to admin_users_path, notice: "User with email #{@user.email} successfully created." 
+        else
+            render :new
         end
-
-        #...
     end
 
     # GET /admin/pendings
