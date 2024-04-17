@@ -1,4 +1,7 @@
-class Admin::UsersController < ApplicationController
+class Admin::AdminUsersController < ApplicationController
+    before_action :authenticate_user!
+    before_action :check_admin
+
     def index
         @users = User.where(admin: false)
     end
@@ -42,5 +45,9 @@ class Admin::UsersController < ApplicationController
 
     def user_params
         params.require(:user).permit(:email, :first_name, :last_name)
+    end
+
+    def check_admin
+        redirect_to root_path unless current_user.admin?
     end
 end
