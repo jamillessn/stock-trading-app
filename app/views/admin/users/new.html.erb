@@ -1,0 +1,15 @@
+<%= form_with model: [ :admin, @user] do |f| %>
+
+  <div class="mb-3">
+    <%= f.label :email, class: "block text-sm text-gray-600" %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "off", class: "w-1/2 px-5 py-1 text-gray-700 bg-gray-200 rounded" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :password, class: "block text-sm text-gray-600" %><br />
+    <%= f.password_field :password, autocomplete: "off", class: "w-1/2 px-5  py-4 text-gray-700 bg-gray-200 rounded" %>
+  </div>
+
+  <div class="actions d-flex justify-content-center mt-6">
+    <%= f.submit "Create User", class: "px-4 py-1 text-white font-light tracking-wider bg-gray-900 rounded" %>
+  </div>
+<% end %>

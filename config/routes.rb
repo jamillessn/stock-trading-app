@@ -4,12 +4,18 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { confirmations: 'users/confirmations' }
     
   namespace :admin do
-    resources :users
+    root to: 'users#index'
+    resources :users do
+      member do
+        post :approve_user
+      end
+    end
     resources :pending, only: [:index]
     resources :transactions, only: [:index]
   end
 
   resources :stocks 
   resources :transactions
+
 
 end
