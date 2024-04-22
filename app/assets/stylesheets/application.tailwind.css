@@ -17,7 +17,13 @@
 body{
   background-color: #FAFAFA;
 }
-
+.body-forms{
+  background-color: #ECF2F6;
+}
 .logo {
   max-width: 12.5%; 
+}
+
+table{
+  width: 100%;
 }

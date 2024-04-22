@@ -1,0 +1,36 @@
+<div class="text-center">
+<h1>Admin Dashboard</h1>
+
+<table >
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Approved</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.first_name %><%= user.last_name %></td>
+        <td><%= user.email %></td>
+        <td><%= user.approved %>
+        <td><%= link_to "Show", admin_user_path(user) %></td>
+        <td><%= link_to "Edit", edit_admin_user_path(user) %></td>
+        
+    
+        <%if not user.approved? %>
+        <td>
+        <%= button_to "Approve", approve_user_admin_user_path(user.id), class:"px-4 py-1 text-white font-light tracking-wider bg-gray-900 rounded"  %>
+        </td>
+        
+        <%end%>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Add a New Trader", new_admin_user_path %>
+
+</div>

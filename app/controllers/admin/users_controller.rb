@@ -1,23 +1,44 @@
 class Admin::UsersController < ApplicationController
+    # before_action :authenticate_user!
+    # before_action :check_admin
+    before_action :set_user, only: [:show, :edit, :update, :destroy]
+
     def index
-        @users = User.where(admin: false)
+        if params[:approved] == "false"
+            @users = User.where(approved: false)
+          else
+            @users = User.where(admin: false)
+          end
     end
     
     def new
         @user = User.new
     end
 
+    def update
+        @user.update!(user_params)
+        redirect_to admin_users_path
+      end
+
+    def destroy
+        @user.destroy
+        redirect_to admin_users_path, notice: "User #{@user.email} has been deleted."
+    end
+
     # POST /admin/users (form data includes user details)
     def create
-        new_user = User.new(user_params)
-        new_user.password = Rails.application.credentials.user.default_password
-        new_user.skip_confirmation!
-        new_user.approved = true
+        @user = User.new(user_params)
+        @user.password = params[:user][:password]
+        @user.skip_confirmation!
+        @user.approved = true
 
-        if new_user.save
-            redirect_to admin_users_path, notice: "User with email #{@user.email} successfully created." 
+        if @user.save
+            # Tell the UserMailer to send a welcome email after save
+            UserMailer.with(user: @user).welcome_email.deliver_later
+            redirect_to admin_users_path
+            flash[:notice] = "User #{@user.email} successfully created." 
         else
-            render :new
+            flash[:alert] = "Failed to add user."
         end
     end
 
@@ -26,21 +47,38 @@ class Admin::UsersController < ApplicationController
         @pending_users = User.where(admin: false, approved: false)
     end
 
-    # POST /admin/users/:id/approve
-    def approve
-        @pending_user = User.where(approved: false).find(params[:id])
-        @pending_user.approved = true
-        @pending_user.save
+    def approve_user
+        user = User.find(params[:id])
+        user.approved = true
+        if user.save
+            flash[:notice] = "#{user.email} approved"
+        else
+            flash[:alert] = "#{user.email} approval failure"
+        end
 
-        #send email ...
-        #redirect ...
-
-        # https://rubydoc.info/github/heartcombo/devise/main (devise confirmable)
+        redirect_to admin_users_path
     end
 
     private
 
     def user_params
         params.require(:user).permit(:email, :first_name, :last_name)
+    end
+
+    def check_admin
+        if current_user.admin?
+            redirect_to admin_users_path
+          else
+            redirect_to regular_users_path
+          end
+        redirect_to root_path unless current_user.admin?
+    end
+
+    def set_user
+        @user = User.find(params[:id])
+    end
+
+    def skip_confirmation
+        @user.confirmed_at = Date.now
     end
 end
