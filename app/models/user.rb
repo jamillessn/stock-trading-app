@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+
+
+   has_many :stocks
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
 
@@ -9,7 +12,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable
 
   default_scope { where(admin:false) }
-       
+
   scope :for_approval, -> { where(approved: false) }
 
   def approve

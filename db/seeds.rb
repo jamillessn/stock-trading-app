@@ -19,3 +19,6 @@ admin = User.create!(
 
 puts 'Admin user created!' if admin.persisted?
 
+User.all.each do |user|
+  user.update(default_balance: 10000)
+end

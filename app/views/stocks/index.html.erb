@@ -1,0 +1,29 @@
+<h1>Popular Stocks</h1>
+<ul>
+  <% @stocks.each do |stock| %>
+    <% price = @stock_prices[stock.symbol] %> 
+    <li>
+      <%= link_to stock.symbol, stock_path(stock.symbol) %> - 
+      <%= stock.company_name %> 
+      <% if price %>
+        ( $<%= price.latest_price %> ) 
+      <% end %>
+
+      <%= form_with(url: buy_stock_path(stock.symbol), method: :post) do %>
+        <%= number_field_tag :quantity, 1, min: 1 %> 
+        <%= submit_tag "Buy" %>
+      <% end %>
+
+      <%= form_with(url: sell_stock_path(stock.symbol), method: :post) do %>
+        <%= number_field_tag :quantity, 1, min: 1 %> 
+        <%= submit_tag "Sell" %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<% if current_user %>
+  <div style="text-align: center;"> 
+    <%= link_to "Portfolio", portfolios_path %> 
+  </div>
+<% end %>

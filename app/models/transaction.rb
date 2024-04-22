@@ -1,5 +1,8 @@
 class Transaction < ApplicationRecord
-  belongs_to :user_id
+  belongs_to :user
+  belongs_to :stock
+  validates :action_type, inclusion: { in: ['Buy', 'Sell'] }
+
 
   def self.buy_shares(current_user,transaction_attributes)
     ActiveRecord::Base.transaction do
@@ -9,7 +12,7 @@ class Transaction < ApplicationRecord
 
       current_user.balance -= transaction.total_amount
       current_user.save!
-      
+
       current_user.transactions.create!(transaction_attributes)
 
       #subtract funds
@@ -18,7 +21,7 @@ class Transaction < ApplicationRecord
       stock = current_user.stocks.find_or_create_by(stock_symbol: transaction_params[:stock_symbol])
       stock.shares += transaction_attributes[:number_of_shares]
       stock.save!
-      
+
     end
   end
 
