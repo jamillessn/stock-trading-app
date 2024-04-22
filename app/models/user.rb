@@ -30,4 +30,8 @@ class User < ApplicationRecord
     AdminMailer.new_user_waiting_for_approval(email).deliver
   end
 
+  def admin?
+    admin
+  end
+
 end

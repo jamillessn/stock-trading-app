@@ -1,16 +1,27 @@
-<% if @users.count > 0 %> 
-      <% @users.each do |user| %>
+<div class="">
+  <section class="user-edit-form">
+  <p class="user-edit-tag"> Edit User </p> 
+   <%= form_with model: [:admin, @user], url: admin_user_path(@user), method: :patch do |form| %>
+    <table>
         <tr>
-          <th scope="row"><%= user.id %></th>
-          <td><%= user.email %></td>
-          <td><%= user.role %></td>
-          <td><%= user.account_status %></td>
-          <td>
-            <div class="d-flex flex-row justify-content-center gap-1">
-              <%= link_to "Show", admin_user_path(user.id), class: "btn btn-primary"%> 
-              <%= link_to "Edit", edit_admin_user_path(user.id), class: "btn btn-info" %> 
-              <%= link_to "Delete", admin_user_path(user.id), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger" %>
-            </div>
-          </td>
-        </tr>
-      <% end %>
+            <th ><%= form.label :first_name, class: "form-label" %>:</th>
+            <td class="edit-user-email"><%= form.text_field :first_name, class: "form-control pl-3", class: "form-control" %></td>
+        </tr> 
+        <tr>
+            <th ><%= form.label :last_name, class: "form-label" %>:</th>
+            <td class="edit-user-email"><%= form.text_field :last_name, class: "form-control pl-3", class: "form-control" %></td>
+        </tr> 
+        <tr>
+            <th ><%= form.label :email, class: "form-label" %>:</th>
+            <td class="edit-user-email"><%= form.text_field :email, class: "form-control pl-3", class: "form-control" %></td>
+        </tr> 
+        
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        </table>
+        <div class="actions d-flex justify-content-center mt-3" >
+            <td><%= form.submit "Update User", class: "btn btn-primary w-50"%></td>
+       </div>
+<% end %>
+
+</section> 
+</div>

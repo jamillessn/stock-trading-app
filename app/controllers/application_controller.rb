@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
+    #Enables devise to recognize first_name and last_name
     before_action :configure_permitted_parameters, if: :devise_controller?
+    # before_action :authenticate_user!
 
     protected
 

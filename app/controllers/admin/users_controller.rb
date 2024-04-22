@@ -1,6 +1,7 @@
 class Admin::UsersController < ApplicationController
     # before_action :authenticate_user!
     # before_action :check_admin
+    before_action :set_user, only: [:show, :edit, :update, :destroy]
 
     def index
         if params[:approved] == "false"
@@ -14,6 +15,16 @@ class Admin::UsersController < ApplicationController
         @user = User.new
     end
 
+    def update
+        @user.update!(user_params)
+        redirect_to admin_users_path
+      end
+
+    def destroy
+        @user.destroy
+        redirect_to admin_users_path, notice: "User #{@user.email} has been deleted."
+    end
+
     # POST /admin/users (form data includes user details)
     def create
         @user = User.new(user_params)
@@ -22,22 +33,12 @@ class Admin::UsersController < ApplicationController
         @user.approved = true
 
         if @user.save
-            redirect_to admin_users_path, notice: "User with email #{@user.email} successfully created." 
+            # Tell the UserMailer to send a welcome email after save
+            UserMailer.with(user: @user).welcome_email.deliver_later
+            redirect_to admin_users_path
+            flash[:notice] = "User #{@user.email} successfully created." 
         else
-            render :new
-        end
-
-        respond_to do |format|
-            if @user.save
-              # Tell the UserMailer to send a welcome email after save
-              UserMailer.with(user: @user).welcome_email.deliver_later
-      
-              format.html { redirect_to(@user, notice: 'User was successfully created.') }
-              format.json { render json: @user, status: :created, location: @user }
-            else
-              format.html { render action: 'new' }
-              format.json { render json: @user.errors, status: :unprocessable_entity }
-            end
+            flash[:alert] = "Failed to add user."
         end
     end
 
@@ -65,7 +66,16 @@ class Admin::UsersController < ApplicationController
     end
 
     def check_admin
+        if current_user.admin?
+            redirect_to admin_users_path
+          else
+            redirect_to regular_users_path
+          end
         redirect_to root_path unless current_user.admin?
+    end
+
+    def set_user
+        @user = User.find(params[:id])
     end
 
     def skip_confirmation

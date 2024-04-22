@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   root to: 'landing_page#index'
 
-  devise_for :users, controllers: { confirmations: 'users/confirmations' }
-    
+  devise_for :users
+
   namespace :admin do
     root to: 'users#index'
     resources :users do

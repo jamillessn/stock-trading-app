@@ -13,7 +13,8 @@ admin = User.create!(
   email: 'test@admin.com',
   password: 'pass123',
   password_confirmation: 'pass123',
-  admin: true
+  admin: true,
+  approved: true
 )
 
 puts 'Admin user created!' if admin.persisted?
