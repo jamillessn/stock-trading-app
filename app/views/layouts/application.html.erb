@@ -10,21 +10,39 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= javascript_include_tag 'toast' %>
   </head>
 
   <body>
 
   <%=  render 'partials/header' %>
 
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16 pt-20 text-center lg:pt-32">
-      <div id="toast-container">
-      <%= notice if notice %>
-      <%= alert if alert %>
-      </div> <!-- Empty div for toast messages -->
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 pb-16 pt-20 text-center ">
+       <% if notice %>
+         <div id="toast-container">
+         
+            <div class="error_explanation">
+               <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+  </svg>
+              <%= notice %>
+              <button class="close-btn">×</button>
+            </div>
+          </div>
+        <% end %>
+
+        <% if alert %>
+          <div id="toast-container">
+            <div class="error_explanation">
+              <%= alert %>
+              <button class="close-btn">×</button>
+            </div>
+          </div>
+        <% end %>
 
     <%= yield %>
     </div>
-  <%= javascript_include_tag 'toast' %>
+  
   </body>
 </html>
 
