@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_18_112639) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_20_194544) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "holdings", force: :cascade do |t|
-    t.bigint "trader_id", null: false
+    t.bigint "user_id", null: false
     t.bigint "stock_id", null: false
     t.integer "quantity", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["stock_id"], name: "index_holdings_on_stock_id"
-    t.index ["trader_id"], name: "index_holdings_on_trader_id"
+    t.index ["user_id"], name: "index_holdings_on_user_id"
   end
 
   create_table "stocks", force: :cascade do |t|
@@ -35,15 +35,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_112639) do
     t.index ["user_id"], name: "index_stocks_on_user_id"
   end
 
-  create_table "traders", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
-    t.string "password_digest"
-    t.decimal "balance"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "transactions", force: :cascade do |t|
     t.string "action_type"
     t.string "company_name"
@@ -51,11 +42,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_112639) do
     t.float "cost_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "trader_id", null: false
+    t.bigint "user_id", null: false
     t.bigint "stock_id", null: false
     t.decimal "price"
     t.index ["stock_id"], name: "index_transactions_on_stock_id"
-    t.index ["trader_id"], name: "index_transactions_on_trader_id"
+    t.index ["user_id"], name: "index_transactions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -64,17 +55,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_112639) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "admin"
     t.string "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
-    t.decimal "default_balance"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "admin"
     t.string "first_name"
     t.string "last_name"
     t.boolean "approved", default: false, null: false
+    t.decimal "default_balance"
     t.index ["approved"], name: "index_users_on_approved"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -82,8 +73,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_18_112639) do
   end
 
   add_foreign_key "holdings", "stocks"
-  add_foreign_key "holdings", "traders"
-  add_foreign_key "transactions", "stocks"
-  add_foreign_key "transactions", "traders"
+  add_foreign_key "holdings", "users"
   add_foreign_key "stocks", "users"
+  add_foreign_key "transactions", "stocks"
+  add_foreign_key "transactions", "users"
 end
