@@ -6,6 +6,7 @@ class StocksController < ApplicationController
 
   def index
     @stocks = @iex_client.stock_market_list(:mostactive) # Or your preferred list
+    @user = current_user.id
 
     # Dynamically create/update Stock records
     @stocks.each do |iex_stock|
@@ -91,8 +92,6 @@ class StocksController < ApplicationController
   end
 
   end
-
-
 
   private
 

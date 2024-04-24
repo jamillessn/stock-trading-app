@@ -1,9 +1,7 @@
-<h1>Your Portfolio</h1>
+<h2> Holdings </h2>
 
-<h2>Holdings</h2>
-
-  <p>You don't have any holdings yet.</p>
-
+<% if @has_holdings %>
+  <!-- Display content for users who have holdings -->
   <table>
     <thead>
       <tr>
@@ -27,7 +25,7 @@
       <% end %>
     </tbody>
   </table>
-
-
+<% else %>
+  <p>You don't have any holdings yet.</p>
+<% end %>
 <h2>Total Portfolio Value: $<%= calculate_total_portfolio_value %></h2>
-

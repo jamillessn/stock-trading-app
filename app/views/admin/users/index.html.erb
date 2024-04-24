@@ -1,7 +1,7 @@
 <div class="text-center">
 <h2>Admin Dashboard</h2>
 
-<table>
+<table class="users-list">
   <thead>
     <tr>
       <th>Name</th>
@@ -13,7 +13,7 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= user.first_name %><%= user.last_name %></td>
+        <td><%= user.first_name %> <%= user.last_name %></td>
         <td><%= user.email %></td>
         <td><%= user.approved %>
         <td><%= link_to "Show", admin_user_path(user) %></td>

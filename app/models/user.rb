@@ -1,11 +1,7 @@
 class User < ApplicationRecord
-
-
-   has_many :stocks
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-
   has_many :stocks
+  has_many :holdings
+
   after_create :send_admin_mail
   
   devise :database_authenticatable, :registerable,

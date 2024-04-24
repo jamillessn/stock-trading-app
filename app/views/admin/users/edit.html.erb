@@ -1,6 +1,6 @@
-<div class="">
+
   <section class="user-edit-form">
-  <p class="user-edit-tag"> Edit User </p> 
+  <h2> Edit User </h2> 
    <%= form_with model: [:admin, @user], url: admin_user_path(@user), method: :patch do |form| %>
     <table>
         <tr>
@@ -19,7 +19,7 @@
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
         </table>
         <div class="actions d-flex justify-content-center mt-3" >
-            <td><%= form.submit "Update User", class: "btn btn-primary w-50"%></td>
+            <td><%= form.submit "Update User", class: "prim-btn-2"%></td>
        </div>
 <% end %>
 

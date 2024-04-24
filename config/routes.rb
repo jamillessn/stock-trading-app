@@ -23,5 +23,5 @@ Rails.application.routes.draw do
   resources :transactions
 
   # Portfolio Route (Place this where you'd like it accessible)
-  get '/portfolio', to: 'portfolios#show'
+  get '/:user_id/portfolio', to: 'portfolios#show', as: 'user_portfolio'
 end
