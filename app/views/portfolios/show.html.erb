@@ -15,19 +15,9 @@
       </tr>
     </thead>
 
-    <tbody>
-      <% @holdings.each do |holding| %>
-        <tr>
-          <td><%= holding.stock.symbol %></td>
-          <td><%= holding.stock.company_name %></td>
-          <td><%= holding.quantity %></td>
-          <td><%= holding.stock.latest_price %></td>
-          <td><%= holding.quantity * holding.stock.latest_price %></td>
-        </tr> 
-      <% end %>
-    </tbody>
+   
   </table>
 
 
-<h2>Total Portfolio Value: $<%= calculate_total_portfolio_value %></h2>
+<span>Total Portfolio Value: $<%= calculate_total_portfolio_value %></span>
 

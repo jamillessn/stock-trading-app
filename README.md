@@ -22,3 +22,9 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+
+GEMS
+Devise
+TailwindCSS
+rails-ujs // fix for the Sign Out link not working
