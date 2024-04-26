@@ -101,6 +101,10 @@ input:focus {
   border-color: #3B82F6; 
 }
 
+.slide-in {
+  transform: translateX(-100%); /* Start from off-screen left */
+  animation-fill-mode: forwards; /* Keep final state after animation */
+}
 /* Buttons  */
 
 .prim-btn-2 {
@@ -175,4 +179,57 @@ input:focus {
 
 .close-btn:hover {
   color: #666;
+}
+
+/* Buffer */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bg-red-600 {
+  background-color: #e53e3e; /* Red */
+}
+
+.bg-green-600 {
+  background-color: #38a169; /* Green */
+}
+
+.toast .loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes slide-in {
+  0% { top: -100px; }
+  100% { top: 20px; } /* Adjust this to set final position from top */
+}
+
+@keyframes stay-visible {
+  0%, 100% { opacity: 1; }
+}
+
+@keyframes fade-out {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
 }

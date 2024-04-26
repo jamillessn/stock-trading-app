@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   root to: 'landing_page#index'
-
-  devise_for :users, controllers: { confirmations: 'users/confirmations' }
+  
+  #Custom controllers for confirmations and sessions with Devise
+  devise_for :users, controllers: { confirmations: 'users/confirmations', sessions: 'users/sessions' }
 
   namespace :admin do
     root to: 'users#index'
@@ -23,5 +24,5 @@ Rails.application.routes.draw do
   resources :transactions
 
   # Portfolio Route (Place this where you'd like it accessible)
-  get '/portfolio', to: 'portfolios#show'
+  get '/:user_id/portfolio', to: 'portfolios#show', as: 'user_portfolio'
 end

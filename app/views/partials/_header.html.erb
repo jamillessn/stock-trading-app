@@ -30,14 +30,17 @@
 			</li>
 			<li><a class="text-sm text-gray-400 hover:text-gray-500" href="#">Portfolio</a></li>
 		</ul>
-		<% if user_signed_in? %>
-			<span class="text-sm text-gray-400 hover:text-gray-500"> Welcome, <%= current_user.first_name %> ! </span>
+		
+	</nav>
+
+	<% if user_signed_in? %>
+			<span class="text-sm text-gray-400 hover:text-gray-500"> <%= current_user.first_name %> </span>
 			<%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+
 		<% else %>
 			<%= link_to "Sign in", new_user_session_path , class:"hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 text-sm text-blue-600 font-bold rounded-xl transition duration-200" %>
 			<%= link_to "Sign up", new_user_registration_path, class:"hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" %>
 		<% end %>
-	</nav>
 	<div class="navbar-menu relative z-50 hidden">
 		<div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25">
             

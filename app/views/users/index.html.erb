@@ -1,0 +1,31 @@
+<h2> Holdings </h2>
+
+<% if @has_holdings %>
+  <!-- Display content for users who have holdings -->
+  <table>
+    <thead>
+      <tr>
+        <th>Symbol</th>
+        <th>Company Name</th>
+        <th>Quantity</th>
+        <th>Current Price</th>
+        <th>Total Value</th> 
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @holdings.each do |holding| %>
+        <tr>
+          <td><%= holding.stock.symbol %></td>
+          <td><%= holding.stock.company_name %></td>
+          <td><%= holding.quantity %></td>
+          <td><%= holding.stock.latest_price %></td>
+          <td><%= holding.quantity * holding.stock.latest_price %></td>
+        </tr> 
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>You don't have any holdings yet.</p>
+<% end %>
+<h2>Total Portfolio Value: $<%= calculate_total_portfolio_value %></h2>

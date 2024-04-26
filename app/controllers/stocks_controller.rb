@@ -2,17 +2,19 @@ class StocksController < ApplicationController
   require 'iex-ruby-client'
 
   before_action :set_iex_client
-  # before_action :authenticate_user!
 
   def index
     @stocks = @iex_client.stock_market_list(:mostactive) # Or your preferred list
+    @user = current_user
 
-    # Dynamically create/update Stock records
-    @stocks.each do |iex_stock|
-      Stock.find_or_create_by(symbol: iex_stock.symbol) do |stock|
-        stock.company_name = iex_stock.company_name
+     # Dynamically create/update Stock records
+      @stocks.each do |iex_stock|
+        stock = Stock.find_or_initialize_by(symbol: iex_stock.symbol)
+        stock.update(company_name: iex_stock.company_name)
+        # Assuming you want to associate the stocks with the current user
+        stock.user_id = @user.id
+        stock.save
       end
-    end
 
     # Pre-fetch prices for efficiency (your existing code)
     symbols = @stocks.map(&:symbol)
@@ -91,8 +93,6 @@ class StocksController < ApplicationController
   end
 
   end
-
-
 
   private
 
