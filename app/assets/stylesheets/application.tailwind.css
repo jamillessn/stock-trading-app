@@ -60,6 +60,13 @@ h2 {
   color: #374151; 
 }
 
+.total-portfolio
+{
+  font-size: large;
+  padding: 10%;
+  margin: 10%;
+}
+
 .field input[type="text"],
 .field input[type="email"],
 .field input[type="password"],

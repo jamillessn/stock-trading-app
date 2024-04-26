@@ -1,6 +1,5 @@
 class StocksController < ApplicationController
   require 'iex-ruby-client'
-
   before_action :set_iex_client
 
   def index

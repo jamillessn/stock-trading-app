@@ -1,4 +1,4 @@
-<h1>Your Portfolio</h1>
+<h1><%= @user.first_name %>'s' Portfolio</h1>
 
 <h2>Holdings</h2>
 
@@ -19,5 +19,5 @@
   </table>
 
 
-<span>Total Portfolio Value: $<%= calculate_total_portfolio_value %></span>
+<span class="total-portfolio">Total Portfolio Value: $<%= calculate_total_portfolio_value %></span>
 
