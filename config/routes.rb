@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root to: 'landing_page#index'
   
   #Custom controllers for confirmations and sessions with Devise
-  devise_for :users, controllers: { confirmations: 'users/confirmations', sessions: 'users/sessions' }
+  devise_for :users
 
   namespace :admin do
     root to: 'users#index'
