@@ -27,3 +27,5 @@ Things you may want to cover:
 GEMS
 Devise
 TailwindCSS
+Letter Opener
+Letter Opener Web
