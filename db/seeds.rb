@@ -15,7 +15,7 @@ user = User.new(
   user.skip_confirmation!
   user.save!
   
-p "Created #{User.count} as admin"
+p "Created #{user.email} as admin"
 
 User.all.each do |user|
   user.update(default_balance: 10000)
