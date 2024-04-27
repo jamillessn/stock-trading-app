@@ -2,12 +2,14 @@ class User < ApplicationRecord
   has_many :stocks
   has_many :holdings
 
+  validates :email, presence: true, uniqueness: true
+
   after_create :send_admin_mail
   
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
 
-  default_scope { where(admin:false) }
+  # default_scope { where(admin:false) }
 
   scope :for_approval, -> { where(approved: false) }
 
@@ -27,10 +29,6 @@ class User < ApplicationRecord
 
   def send_admin_mail
     AdminMailer.new_user_waiting_for_approval(email).deliver
-  end
-
-  def admin?
-    admin
   end
 
 end
