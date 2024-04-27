@@ -9,7 +9,8 @@ user = User.new(
     password: 'admin123', 
     password_confirmation: 'admin123',
     admin: true,
-    approved: true
+    approved: true,
+    first_name: 'Admin'
   )
   user.skip_confirmation!
   user.save!
