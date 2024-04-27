@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   #Custom controllers for confirmations and sessions with Devise
   devise_for :users
 
+  #Letter_opener_web
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
+
+
   namespace :admin do
     root to: 'users#index'
     resources :users do
