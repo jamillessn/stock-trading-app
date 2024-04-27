@@ -3,11 +3,15 @@ class Admin::UsersController < ApplicationController
     before_action :set_user, only: [:show, :edit, :update, :destroy]
 
     def index
-        if params[:approved] == "false"
-            @users = User.where(approved: false)
-          else
-            @users = User.where(admin: false)
-          end
+        @users = User.where(admin: false)
+        # if params[:approved] == "false"
+        #     @users = User.where(approved: false)
+        #   else
+        #     @users = User.where(admin: false)
+        #   end
+
+        #   @pending_users = User.where(admin: false, approved: false)
+
     end
     
     def new
