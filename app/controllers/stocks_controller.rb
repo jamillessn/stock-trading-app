@@ -96,5 +96,5 @@ class StocksController < ApplicationController
   private
 
   def set_iex_client
-    @iex_client = IEX::Api::Client.new(publishable_token: 'pk_dc485c54f85f46b3b104d7ca13de635d')
+    @iex_client = IEX::Api::Client.new(publishable_token: 'sk_2147c4351ee74eb284a6cac4051940dd')
   end
