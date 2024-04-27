@@ -3,7 +3,6 @@ class Transaction < ApplicationRecord
   belongs_to :stock
   validates :action_type, inclusion: { in: ['Buy', 'Sell'] }
 
-
   def self.buy_shares(current_user,transaction_attributes)
     ActiveRecord::Base.transaction do
       transaction = current_user.transactions.build(transaction_attributes)

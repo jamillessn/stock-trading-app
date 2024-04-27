@@ -71,3 +71,4 @@ gem 'tailwindcss-rails'
 gem 'httparty'
 gem 'iex-ruby-client'
 gem 'dotenv-rails', group: :development
+gem 'letter_opener', group: :development

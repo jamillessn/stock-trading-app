@@ -1,34 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Stock Trading App</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+<head>
+  <title>Stock Trading App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-    <%= javascript_include_tag 'toast' %>
-  </head>
+  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_importmap_tags %>
+  <%= javascript_include_tag 'toast' %>
+</head>
 
-  <body>
+<body>
+  <div class="flex">
+    <% if user_logged_in? %>
+      <div class="w-1/6">
+        <% if current_user.admin? %>
+          <%= render 'partials/adminsidebar' %>
+        <% else %>
+          <%= render 'partials/sidebar' %>
+        <% end %>
+      </div>
+      <div class="w-5/6">
 
-  <%=  render 'partials/header' %>
-
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 pb-16 pt-20 text-center ">
-   
-    
-    <div class="notice" style="display: none;"><%= notice %></div>
-    <div class="alert" style="display: none;"><%= alert %></div>
-
-    
-    <%= yield %>
-    </div>
-  
-  </body>
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 pb-16 pt-20 text-center">
+          <div class="notice" style="display: none;"><%= notice %></div>
+          <div class="alert" style="display: none;"><%= alert %></div>
+          <%= yield %>
+        </div>
+      </div>
+    <% else %>
+      <div class="w-full">
+        <%= render 'partials/header' %>
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 pb-16 pt-20 text-center">
+          <div class="notice" style="display: none;"><%= notice %></div>
+          <div class="alert" style="display: none;"><%= alert %></div>
+          <%= yield %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</body>
 </html>
-
-

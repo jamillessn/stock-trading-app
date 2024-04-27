@@ -1,17 +1,12 @@
 class User < ApplicationRecord
-  has_many :stocks
-  has_many :holdings
-
-  validates :email, presence: true, uniqueness: true
-
+  before_save :set_default_balance
   after_create :send_admin_mail
-  
+  has_many :stocks
+  scope :for_approval, -> { where(approved: false) }
+  validates :email, presence: true, uniqueness: true
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
-
-  # default_scope { where(admin:false) }
-
-  scope :for_approval, -> { where(approved: false) }
+  
 
   def approve
     self.approved = true
@@ -29,6 +24,16 @@ class User < ApplicationRecord
 
   def send_admin_mail
     AdminMailer.new_user_waiting_for_approval(email).deliver
+  end
+
+  private
+
+  def set_default_balance
+    self.default_balance = 10000 
+  end
+
+  def set_confirmed_at
+    self.confirmed_at = Time.zone.now
   end
 
 end
