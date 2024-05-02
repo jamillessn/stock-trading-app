@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
       if resource.admin?
         admin_users_path
       else
-        user_portfolio_path(resource)
+        stocks_path
       end
     end
   end

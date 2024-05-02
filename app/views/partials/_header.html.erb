@@ -41,7 +41,7 @@
 
 		<% else %>
 			<%= link_to "Sign in", new_user_session_path , class:"hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 text-sm text-blue-600 font-bold rounded-xl transition duration-200" %>
-			<%= link_to "Sign up", new_user_registration_path, class:"hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200" %>
+			<%= link_to "Sign up", new_user_registration_path, class:"hidden lg:inline-block py-2 px-6 bg-blue-500 hover:text-white text-sm text-white font-bold rounded-xl transition duration-200" %>
 		<% end %>
 		
 	</nav>
@@ -67,8 +67,7 @@
 			<div>
 				<ul>
 					<li class="mb-1">
-						<%# <a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="#">Home</a> %>
-                         <%= link_to "Home", root_path, class:"block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" %>
+                        <%= link_to "Home", root_path, class:"block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" %>
 					</li>
 					<li class="mb-1">
 						<a class="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded" href="#">About Us</a>

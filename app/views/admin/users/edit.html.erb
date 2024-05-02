@@ -1,23 +1,20 @@
 
   <section class="user-edit-form">
   <h2> Edit User </h2> 
-   <%= form_with model: [:admin, @user], url: admin_user_path(@user), method: :patch do |form| %>
-    <table>
+   <%= form_with model: [:admin, @user], url: admin_user_path(@user), method: :patch, class:'form-basic' do |form| %>
+
         <tr>
-            <th ><%= form.label :first_name, class: "form-label" %>:</th>
+            <th><%= form.label :first_name, class: "form-label" %></th>
             <td class="edit-user-email"><%= form.text_field :first_name, class: "form-control pl-3", class: "form-control" %></td>
         </tr> 
         <tr>
-            <th ><%= form.label :last_name, class: "form-label" %>:</th>
+            <th ><%= form.label :last_name, class: "form-label" %></th>
             <td class="edit-user-email"><%= form.text_field :last_name, class: "form-control pl-3", class: "form-control" %></td>
         </tr> 
         <tr>
-            <th ><%= form.label :email, class: "form-label" %>:</th>
+            <th ><%= form.label :email, class: "form-label" %></th>
             <td class="edit-user-email"><%= form.text_field :email, class: "form-control pl-3", class: "form-control" %></td>
         </tr> 
-        
-        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-        </table>
         <div class="actions d-flex justify-content-center mt-3" >
             <td><%= form.submit "Update User", class: "prim-btn-2"%></td>
        </div>

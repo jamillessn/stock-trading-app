@@ -60,8 +60,6 @@ class Admin::UsersController < ApplicationController
         params.require(:user).permit(:email, :first_name, :last_name)
     end
 
-
-
     def set_user
         @user = User.find(params[:id])
     end

@@ -1,30 +1,28 @@
 <h2>Popular Stocks</h2>
-<ul>
+<div class="grid grid-cols-5 gap-4">
   <% @stocks.each do |stock| %>
     <% price = @stock_prices[stock.symbol] %> 
-    <li>
-      <%= link_to stock.symbol, stock_path(stock.symbol) %> - 
-      <%= stock.company_name %> 
+    <div class="stock-item">
+      <% if @stock_logos[stock.symbol].present? %>
+        <%= image_tag @stock_logos[stock.symbol], class: "stock-logo", alt: "#{stock.symbol} logo" %>
+      <% end %>
+
+      <div>
+        <%= link_to stock.symbol, stock_path(stock.symbol) %> - 
+        <%= stock.company_name %> 
      
-      <% if price %>
-        ( $<%= price.latest_price %> ) 
-      <% end %>
+        <% if price %>
+          ( $<%= price.latest_price %> ) 
+        <% end %>
 
-      <%= form_with(url: buy_stock_path(stock.symbol), method: :post) do %>
-        <%= number_field_tag :quantity, 1, min: 1 %> 
-        <%= submit_tag "Buy" %>
-      <% end %>
+        <%= form_with(url: buy_stock_path(stock.symbol), method: :post) do %>
+        
+          <%= number_field_tag :quantity, 1, min: 1, class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"%> 
+          <%= submit_tag "Buy", class:'gray-btn' %>
+        
+        <% end %>
 
-      <%= form_with(url: sell_stock_path(stock.symbol), method: :post) do %>
-        <%= number_field_tag :quantity, 1, min: 1 %> 
-        <%= submit_tag "Sell" %>
-      <% end %>
-    </li>
+      </div>
+    </div>
   <% end %>
-</ul>
-
-<% if current_user %>
-  <div style="text-align: center;"> 
-    <%= link_to "Portfolio", user_portfolio_path(@user) %> 
-  </div>
-<% end %>
+</div>
