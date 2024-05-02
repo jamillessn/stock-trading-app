@@ -5,6 +5,7 @@
     <li>
       <%= link_to stock.symbol, stock_path(stock.symbol) %> - 
       <%= stock.company_name %> 
+     
       <% if price %>
         ( $<%= price.latest_price %> ) 
       <% end %>

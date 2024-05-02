@@ -127,14 +127,15 @@ input:focus {
   font-size: 0.875rem; 
   font-weight: 500; 
   border-radius: 0.5rem; 
-  margin-right: 0.5rem; 
-  margin-bottom: 0.5rem;
   transition-duration: 0.2s; 
-  outline: none;
+  width: auto;
+  margin: 0 auto;
+  margin-top: 3rem;
 }
 
 .prim-btn-2:hover {
   background-color: #2563EB; 
+  color:white;
 }
 
 .prim-btn-2:focus {

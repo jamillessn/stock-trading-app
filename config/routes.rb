@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
 
   namespace :admin do
-    root to: 'users#index'
+    root to: 'users#index' , as: 'admin_dashboard'
     resources :users do
       member do
         post :approve_user
