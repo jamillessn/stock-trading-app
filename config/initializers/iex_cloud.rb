@@ -1,8 +1,8 @@
-require 'dotenv/load' # Loads environment variables from .env
-require 'iex-ruby-client'  # If you installed the gem
+require 'dotenv/load' 
+require 'iex-ruby-client'  
 
-IEX_CLIENT = IEX::Api::Client.new(
-    publishable_token: ENV['pk_64a94b68c5c843868a5f955516a6edb9'],
-    secret_token: ENV['sk_5e8df1e4276a468c9272cf50979557d9'],
-    endpoint: 'https://sandbox.iexapis.com/v1' # Use sandbox for testing
-)
+IEX::Api.configure do |config|
+    config.publishable_token = 'pk_23f3553501844564883691685d9a54c4' # defaults to ENV['IEX_API_PUBLISHABLE_TOKEN']
+    config.secret_token = 'sk_d67df174e2e247d59c359c10448bd0c8' # defaults to ENV['IEX_API_SECRET_TOKEN']
+    config.endpoint = 'https://cloud.iexapis.com/v1' # use 'https://sandbox.iexapis.com/v1' for Sandbox
+  end

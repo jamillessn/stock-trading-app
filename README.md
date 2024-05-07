@@ -32,3 +32,4 @@ Httparty
 Letter Opener
 Letter Opener Web
 Inline SVG
+Redis rails #for cache

@@ -3,30 +3,38 @@ class StocksController < ApplicationController
   before_action :set_iex_client
 
   def index
-    @stocks = @iex_client.stock_market_list(:mostactive)
+    # Cache the list of most active stocks for 10 minutes
+    @stocks = Rails.cache.fetch("most_active_stocks", expires_in: 10.minutes) do
+      @iex_client.stock_market_list(:mostactive).take(10)
+    end
+  
     @user = current_user
-
-     # Dynamically create/update Stock records
-      @stocks.each do |iex_stock|
-        stock = Stock.find_or_initialize_by(symbol: iex_stock.symbol)
-        stock.update(company_name: iex_stock.company_name)
-        stock.save
-      end
-
-    # Pre-fetch prices for efficiency (your existing code)
+  
+    # Update database records from cached data
+    @stocks.each do |iex_stock|
+      stock = Stock.find_or_initialize_by(symbol: iex_stock.symbol)
+      stock.update(company_name: iex_stock.company_name)
+      stock.save
+    end
+  
+    # Cache stock prices
     symbols = @stocks.map(&:symbol)
     @stock_prices = {}
-
     symbols.each do |symbol|
-      @stock_prices[symbol] = @iex_client.quote(symbol)
+      @stock_prices[symbol] = Rails.cache.fetch("#{symbol}_price", expires_in: 10.minutes) do
+        @iex_client.quote(symbol)
+      end
     end
-
-    # Fetch logo URLs for stocks
+  
+    # Cache logo URLs
     @stock_logos = {}
     symbols.each do |symbol|
-      @stock_logos[symbol] = @iex_client.logo(symbol).url
+      @stock_logos[symbol] = Rails.cache.fetch("#{symbol}_logo", expires_in: 24.hours) do
+        @iex_client.logo(symbol).url
+      end
     end
   end
+  
 
 
   def buy
@@ -100,5 +108,5 @@ class StocksController < ApplicationController
   private
 
   def set_iex_client
-    @iex_client = IEX::Api::Client.new(publishable_token: 'sk_2147c4351ee74eb284a6cac4051940dd')
+    @iex_client = IEX::Api::Client.new(publishable_token: 'sk_d67df174e2e247d59c359c10448bd0c8')
   end
