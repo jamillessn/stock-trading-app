@@ -2,6 +2,7 @@ class User < ApplicationRecord
   before_save :set_default_balance
   after_create :send_admin_mail
   has_many :stocks
+  has_many :transactions
   scope :for_approval, -> { where(approved: false) }
   validates :email, presence: true, uniqueness: true
   devise :database_authenticatable, :registerable,

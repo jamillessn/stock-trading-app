@@ -64,10 +64,11 @@ class StocksController < ApplicationController
       )
   
       # Update user's balance
-      user.update(default_balance: user.default_balance - total_cost)
+      user.update!(default_balance: user.default_balance - total_cost)
     end
   
-    flash[:success] = 'Stock bought successfully'
+    flash[:notice] = "Stock bought successfully."
+  
     redirect_to user_portfolio_path(user.id)
   end
 

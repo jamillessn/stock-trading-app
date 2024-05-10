@@ -15,10 +15,16 @@ class Admin::UsersController < ApplicationController
         redirect_to admin_users_path
       end
 
-    def destroy
-        @user.destroy
+      def destroy
+        ActiveRecord::Base.transaction do
+            @user.transactions.destroy_all
+            @user.stocks.destroy_all
+            @user.destroy
+        end
         redirect_to admin_users_path, notice: "User #{@user.email} has been deleted."
-    end
+      rescue ActiveRecord::RecordNotDestroyed
+        redirect_to admin_users_path, alert: "Failed to delete user due to associated records."
+      end
 
     # POST /admin/users (form data includes user details)
     def create

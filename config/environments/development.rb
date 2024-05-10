@@ -3,12 +3,25 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # Letter Opener configuration
   LetterOpener.configure do |config|
+    # To overrider the location for message storage.
+    # Default value is `tmp/letter_opener`
+    config.letters_location = Rails.root.join('your', 'new', 'path')
     config.location = Rails.root.join('tmp', 'my_mails')
+  
+    # To render only the message body, without any metadata or extra containers or styling.
+    # Default value is `:default` that renders styled message with showing useful metadata.
     config.message_template = :light
-    config.file_uri_scheme = 'file://///wsl$/Ubuntu-18.04'  # For WSL users
+  
+    # To change default file URI scheme you can provide `file_uri_scheme` config.
+    # It might be useful when you use WSL (Windows Subsystem for Linux) and default
+    # scheme doesn't work for you.
+    # Default value is blank
+    config.file_uri_scheme = 'file://///wsl$/Ubuntu-18.04'
   end
+
+  config.action_mailer.delivery_method = :letter_opener_web
+  config.action_mailer.perform_deliveries = true
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
@@ -81,7 +94,5 @@ Rails.application.configure do
   config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] || 'redis://localhost:6379/1' }
   # Raise error when a before_action's only/except options reference missing actions
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-  config.action_mailer.delivery_method = :letter_opener
-  config.action_mailer.perform_deliveries = true
   
 end

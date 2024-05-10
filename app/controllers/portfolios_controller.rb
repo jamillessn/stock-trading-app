@@ -20,61 +20,6 @@ class PortfoliosController < ApplicationController
     end
   end
 
-  def create
-    ActiveRecord::Base.transaction do
-      stocks = @user.stock.find_or_initialize_by(symbol: stock.symbol)
-      @symbol = params[:symbol]
-      @quantity = params[:quantity].to_i
-
-      # Implement your logic to handle the stock purchase here
-        if action == 'Buy'
-          total_cost = price * quantity
-        if total_cost > @user.default_balance
-          return { success: false, message: 'Insufficient funds to complete this transaction' }
-        end
-
-        @user.default_balance -= total_cost
-        stocks.share = (stocks.share || 0) + quantity
-
-      elsif action == 'Sell'
-        
-          unless stock
-            return { success: false, message: 'Stock not found' }
-          end
-    
-          #Find portfolio for a stock 
-          #Validates if the user has sufficent shares for the sell order
-          stock = @user.stock.find_by(stock: stock)
-          if stock.nil? || stock.share < quantity
-            return { success: false, message: 'Not enough shares to sell' }
-          end
-    
-          price = @iex_client.quote(stock.symbol).latest_price
-          total_revenue = price * quantity
-          
-          @user.default_balance += total_revenue
-          
-          # Update portfolio or destroy if no shares remain
-          stock.share -= quantity
-
-          if stock.share <= 0
-            stock.destroy!
-          else
-            stock.save!
-          end
-          
-          # Save changes to the user
-          @user.save!
-          create_transaction(stock, quantity, 'sell', price)
-
-        end
-      rescue StandardError => e
-        return { success: false, message: e.message }
-      end
-    
-    # Redirect or render depending on your application's flow
-    redirect_to user_portfolio_path, notice: 'Stock bought successfully.'
-  end
 
   private
 
