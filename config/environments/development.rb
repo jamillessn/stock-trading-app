@@ -3,10 +3,24 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+   # Ensure the mailer uses the correct host and port
+   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+   # Set delivery method to :letter_opener_web
+   config.action_mailer.delivery_method = :letter_opener_web
+ 
+   # Perform email delivery (i.e., open emails in the browser)
+   config.action_mailer.perform_deliveries = true
+ 
+   # Optionally, specify where Letter Opener Web should open emails
+   # This path should match the route you've mounted in routes.rb
+  #  LetterOpenerWeb.configure do |lop|
+  #    lop.location = Rails.root.join('tmp', 'letter_opener')
+  #  end
+
   LetterOpener.configure do |config|
     # To overrider the location for message storage.
     # Default value is `tmp/letter_opener`
-    config.letters_location = Rails.root.join('your', 'new', 'path')
     config.location = Rails.root.join('tmp', 'my_mails')
   
     # To render only the message body, without any metadata or extra containers or styling.
@@ -18,10 +32,7 @@ Rails.application.configure do
     # scheme doesn't work for you.
     # Default value is blank
     config.file_uri_scheme = 'file://///wsl$/Ubuntu-18.04'
-  end
-
-  config.action_mailer.delivery_method = :letter_opener_web
-  config.action_mailer.perform_deliveries = true
+ end
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
@@ -57,7 +68,7 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
 
@@ -92,7 +103,5 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 
   config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] || 'redis://localhost:6379/1' }
-  # Raise error when a before_action's only/except options reference missing actions
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   
 end

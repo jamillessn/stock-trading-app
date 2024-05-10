@@ -38,6 +38,7 @@ class StocksController < ApplicationController
     total_cost = price * quantity
   
     # Check if the user has enough balance
+    
     if user.default_balance < total_cost
       flash[:error] = 'Insufficient funds to complete this transaction'
       redirect_to stocks_path
@@ -64,11 +65,16 @@ class StocksController < ApplicationController
       )
   
       # Update user's balance
-      user.update!(default_balance: user.default_balance - total_cost)
+      Rails.logger.info "Before Update: #{user.default_balance}"
+      Rails.cache.delete("user_#{user.id}_balance")
+
+      user.default_balance -= total_cost
+      user.save!
+      
+      Rails.logger.info "After Update: #{user.reload.default_balance}"
     end
   
     flash[:notice] = "Stock bought successfully."
-  
     redirect_to user_portfolio_path(user.id)
   end
 

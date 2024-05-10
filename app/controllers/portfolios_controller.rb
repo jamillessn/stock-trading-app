@@ -14,6 +14,7 @@ class PortfoliosController < ApplicationController
     end
   end
 
+  
   def calculate_total_portfolio_value
     @user_stocks.sum do |stock|
       @stock_values[stock.symbol][:total_value]
@@ -30,5 +31,6 @@ class PortfoliosController < ApplicationController
   def set_iex_client
     @iex_client = IEX::Api::Client.new(publishable_token: 'sk_d67df174e2e247d59c359c10448bd0c8')
   end
+
   
 end
