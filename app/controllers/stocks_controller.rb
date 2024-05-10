@@ -10,13 +10,6 @@ class StocksController < ApplicationController
   
     @user = current_user
   
-    # Update database records from cached data
-    @stocks.each do |iex_stock|
-      stock = Stock.find_or_initialize_by(symbol: iex_stock.symbol)
-      stock.update(company_name: iex_stock.company_name)
-      stock.save
-    end
-  
     # Cache stock prices
     symbols = @stocks.map(&:symbol)
     @stock_prices = {}
@@ -34,39 +27,48 @@ class StocksController < ApplicationController
       end
     end
   end
-  
-
 
   def buy
-    @stock = Stock.find(params[:id])
-    @user = current_user
-
+    symbol = params[:symbol]
+    company_name = params[:company_name]
     quantity = params[:quantity].to_i
-    latest_price = @iex_client.quote(@stock.symbol).latest_price
-    total_cost = quantity * latest_price
-
-    if @user.balance >= total_cost && quantity >= 1
-      ActiveRecord::Base.transaction do # Ensures all database operations succeed or fail together
-        @user.balance -= total_cost
-        @user.save!
-
-        holding = @user.holdings.find_or_create_by(stock: @stock)
-        holding.quantity += quantity
-        holding.save!
-
-        Transaction.create!(
-          trader: @user,
-          stock: @stock,
-          action_type: 'Buy',
-          quantity: quantity,
-          price: latest_price
-        )
-      end
-      flash[:success] = "You bought #{quantity} shares of #{@stock.symbol}"
-    else
-      # ... error handling (from previous example) ...
+    user = current_user
+  
+    price = @iex_client.quote(symbol).latest_price  # Fetch latest price
+    total_cost = price * quantity
+  
+    # Check if the user has enough balance
+    if user.default_balance < total_cost
+      flash[:error] = 'Insufficient funds to complete this transaction'
+      redirect_to stocks_path
+      return
     end
-    redirect_to stocks_path # Redirect in all cases
+  
+    ActiveRecord::Base.transaction do
+      # Create or update the stock record
+      stock = user.stocks.find_or_initialize_by(symbol: symbol)
+      stock.company_name = company_name
+      stock.shares = (stock.shares || 0) + quantity
+      stock.cost_price = price  # This might need adjustment based on your schema
+      stock.save!
+  
+      # Create the transaction record
+      Transaction.create!(
+        action_type: 'Buy',
+        company_name: company_name,
+        shares: quantity,
+        cost_price: total_cost,
+        user: user,
+        stock: stock,
+        price: price
+      )
+  
+      # Update user's balance
+      user.update(default_balance: user.default_balance - total_cost)
+    end
+  
+    flash[:success] = 'Stock bought successfully'
+    redirect_to user_portfolio_path(user.id)
   end
 
   def sell

@@ -19,14 +19,11 @@ Rails.application.routes.draw do
     resources :transactions, only: [:index]
   end
 
-  resources :stocks do
-    member do
-      post 'buy'
-      post 'sell'
-    end
-  end
+  post '/buy_stocks', to: 'stocks#buy', as: :buy_stocks
+
+  resources :stocks 
   resources :transactions
 
-  # Portfolio Route (Place this where you'd like it accessible)
   get '/:user_id/portfolio', to: 'portfolios#show', as: 'user_portfolio'
+  
 end
