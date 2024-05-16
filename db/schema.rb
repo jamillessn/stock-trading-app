@@ -65,7 +65,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_20_194544) do
     t.string "first_name"
     t.string "last_name"
     t.boolean "approved", default: false, null: false
-    t.decimal "default_balance"
+    t.decimal "default_balance", default: 0.0, null: false
     t.index ["approved"], name: "index_users_on_approved"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

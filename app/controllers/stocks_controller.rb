@@ -37,7 +37,10 @@ class StocksController < ApplicationController
 
     # Check if the user has enough balance
     if @user.default_balance < total_cost
+      
+        redirect_to user_portfolio_path(@user.id)
         flash[:error] = 'Insufficient funds to complete this transaction'
+        return
     else
         ActiveRecord::Base.transaction do
           stock = @user.stocks.find_or_initialize_by(symbol: symbol)
@@ -102,7 +105,7 @@ class StocksController < ApplicationController
   private
 
   def set_iex_client
-    @iex_client = IEX::Api::Client.new(publishable_token: 'sk_d67df174e2e247d59c359c10448bd0c8')
+    @iex_client = IEX::Api::Client.new(publishable_token: 'sk_85666730572d4953ad81b471373cf4ce')
   end
 
   def set_user

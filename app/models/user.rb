@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  after_create :set_default_balance
   has_many :stocks
   has_many :transactions
   scope :for_approval, -> { where(approved: false) }
@@ -24,6 +25,10 @@ class User < ApplicationRecord
 
   def set_confirmed_at
     self.confirmed_at = Time.zone.now
+  end
+  
+  def set_default_balance
+    self.default_balance = 0
   end
 
 end

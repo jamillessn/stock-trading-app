@@ -10,6 +10,7 @@
       <th>Name</th>
       <th>Email</th>
       <th>Approved</th>
+      <th>Balance</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -19,6 +20,7 @@
         <td class="whitespace-nowrap px-6 py-4"><%= user.first_name %> <%= user.last_name %></td>
         <td><%= user.email %></td>
         <td style="text-transform: uppercase;"><%= user.approved %></td>
+        <td style="text-transform: uppercase;"><%= user.default_balance %></td>
         <td class="flex justify-center gap-5 whitespace-nowrap px-6 py-4">
           <%= link_to "Show", admin_user_path(user) %>
           <%= link_to "Edit", edit_admin_user_path(user) %> 

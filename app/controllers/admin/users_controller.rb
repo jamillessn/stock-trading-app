@@ -29,6 +29,7 @@ class Admin::UsersController < ApplicationController
     def create
       @user = User.new(user_params)
       @user.password = params[:user][:password]
+      @user.default_balance = 0.0
       @user.skip_confirmation!
       @user.approved = true
   
