@@ -72,6 +72,8 @@ gem 'httparty'
 gem 'iex-ruby-client'
 gem 'dotenv-rails', group: :development
 gem 'letter_opener', group: :development
+gem 'inline_svg'
+gem 'redis-rails'
 
 group :development do
   gem 'letter_opener_web', '~> 2.0'

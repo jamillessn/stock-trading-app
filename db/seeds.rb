@@ -17,6 +17,3 @@ user = User.new(
   
 p "Created #{user.email} as admin"
 
-User.all.each do |user|
-  user.update(default_balance: 10000)
-end

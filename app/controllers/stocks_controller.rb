@@ -1,60 +1,71 @@
 class StocksController < ApplicationController
   require 'iex-ruby-client'
   before_action :set_iex_client
+  before_action :set_user
 
   def index
-    @stocks = @iex_client.stock_market_list(:mostactive) # Or your preferred list
-    @user = current_user
+    # Cache the list of most active stocks for 10 minutes
+    @stocks = Rails.cache.fetch("most_active_stocks", expires_in: 10.minutes) do
+      @iex_client.stock_market_list(:mostactive).take(10)
+    end
 
-     # Dynamically create/update Stock records
-      @stocks.each do |iex_stock|
-        stock = Stock.find_or_initialize_by(symbol: iex_stock.symbol)
-        stock.update(company_name: iex_stock.company_name)
-        # Assuming you want to associate the stocks with the current user
-        stock.user_id = @user.id
-        stock.save
-      end
-
-    # Pre-fetch prices for efficiency (your existing code)
+    # Cache stock prices
     symbols = @stocks.map(&:symbol)
-    @stock_prices = {} # Use a hash to store prices
-
+    @stock_prices = {}
     symbols.each do |symbol|
-      @stock_prices[symbol] = @iex_client.quote(symbol)
+      @stock_prices[symbol] = Rails.cache.fetch("#{symbol}_price", expires_in: 10.minutes) do
+        @iex_client.quote(symbol)
+      end
+    end
+  
+    # Cache logo URLs
+    @stock_logos = {}
+    symbols.each do |symbol|
+      @stock_logos[symbol] = Rails.cache.fetch("#{symbol}_logo", expires_in: 24.hours) do
+        @iex_client.logo(symbol).url
+      end
     end
   end
 
-
   def buy
-    @stock = Stock.find(params[:id])
-    @user = current_user
-
+    symbol = params[:symbol]
+    company_name = params[:company_name]
     quantity = params[:quantity].to_i
-    latest_price = @iex_client.quote(@stock.symbol).latest_price
-    total_cost = quantity * latest_price
 
-    if @user.balance >= total_cost && quantity >= 1
-      ActiveRecord::Base.transaction do # Ensures all database operations succeed or fail together
-        @user.balance -= total_cost
-        @user.save!
+    price = @iex_client.quote(symbol).latest_price  # Fetch latest price
+    total_cost = price.round(2) * quantity
 
-        holding = @user.holdings.find_or_create_by(stock: @stock)
-        holding.quantity += quantity
-        holding.save!
-
-        Transaction.create!(
-          trader: @user,
-          stock: @stock,
-          action_type: 'Buy',
-          quantity: quantity,
-          price: latest_price
-        )
-      end
-      flash[:success] = "You bought #{quantity} shares of #{@stock.symbol}"
+    # Check if the user has enough balance
+    if @user.default_balance < total_cost
+      
+        redirect_to user_portfolio_path(@user.id)
+        flash[:error] = 'Insufficient funds to complete this transaction'
+        return
     else
-      # ... error handling (from previous example) ...
-    end
-    redirect_to stocks_path # Redirect in all cases
+        ActiveRecord::Base.transaction do
+          stock = @user.stocks.find_or_initialize_by(symbol: symbol)
+          stock.company_name = company_name
+          stock.shares = (stock.shares || 0) + quantity
+          stock.cost_price = price
+          stock.save!
+
+          Transaction.create!(
+              action_type: 'Buy',
+              company_name: company_name,
+              shares: quantity,
+              cost_price: total_cost,
+              user: @user,
+              stock: stock,
+              price: price
+          )
+          
+          @user.update!(default_balance: @user.default_balance =- total_cost)
+          flash[:notice] = "Stock bought successfully."
+
+          end
+      end
+
+    redirect_to user_portfolio_path(@user.id)
   end
 
   def sell
@@ -89,12 +100,16 @@ class StocksController < ApplicationController
        # ... error handling (from previous example) ...
     end
     redirect_to stocks_path # Redirect in all cases
-  end
-
-  end
+  end 
 
   private
 
   def set_iex_client
-    @iex_client = IEX::Api::Client.new(publishable_token: 'sk_2147c4351ee74eb284a6cac4051940dd')
+    @iex_client = IEX::Api::Client.new(publishable_token: 'sk_85666730572d4953ad81b471373cf4ce')
   end
+
+  def set_user
+    @user = current_user
+  end
+
+end

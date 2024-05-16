@@ -1,23 +1,29 @@
-
-
 <h2>My Portfolio</h2>
 
-  <p>You don't have any holdings yet.</p>
-
-  <table class="table-auto">
+<% if @user_stocks.any? %>
+  <table class="table-auto w-full">
     <thead>
       <tr>
-        <th>Symbol</th>
-        <th>Company Name</th>
-        <th>Quantity</th>
-        <th>Current Price</th>
-        <th>Total Value</th> 
+        <th class="px-4 py-2">Symbol</th>
+        <th class="px-4 py-2">Company Name</th>
+        <th class="px-4 py-2">Quantity</th>
+        <th class="px-4 py-2">Current Price</th>
+        <th class="px-4 py-2">Total Value</th>
       </tr>
     </thead>
-
-   
+    <tbody>
+      <% @user_stocks.each do |stock| %>
+        <tr>
+          <td class="border px-4 py-2"><%= stock.symbol %></td>
+          <td class="border px-4 py-2"><%= stock.company_name %></td>
+          <td class="border px-4 py-2"><%= stock.shares %></td>
+          <td class="border px-4 py-2">$<%= @stock_values[stock.symbol][:current_price] %></td>
+          <td class="border px-4 py-2">$<%= @stock_values[stock.symbol][:total_value] %></td>
+        </tr>
+      <% end %>
+    </tbody>
   </table>
-
-
-<span class="total-portfolio">Total Portfolio Value: $<%= calculate_total_portfolio_value %></span>
-
+  <span class="total-portfolio">Total Portfolio Value: $<%= calculate_total_portfolio_value %></span>
+<% else %>
+  <p>You don't have any holdings yet.</p>
+<% end %>
