@@ -26,5 +26,6 @@ Rails.application.routes.draw do
   resources :transactions
 
   get '/:user_id/portfolio', to: 'portfolios#show', as: 'user_portfolio'
+  post '/:user_id/update_balance', to: 'user#update_balance', as: 'update_balance'
   
 end

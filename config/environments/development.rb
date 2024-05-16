@@ -7,7 +7,7 @@ Rails.application.configure do
    config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
    # Set delivery method to :letter_opener_web
-   config.action_mailer.delivery_method = :letter_opener_web
+   config.action_mailer.delivery_method = :letter_opener
  
    # Perform email delivery (i.e., open emails in the browser)
    config.action_mailer.perform_deliveries = true
