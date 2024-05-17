@@ -12,16 +12,6 @@ import 'tailwindcss/tailwind.css'
     });
   });
   
-// Cash in modal 
+// Sell Modal
 
-document.addEventListener("DOMContentLoaded", function() {
-  const cashInButton = document.querySelector(".cash-in-btn"); // Select the button
 
-  if (cashInButton) {
-    cashInButton.addEventListener("click", function() {
-      const cashInModal = document.getElementById("cash-in-modal");
-      cashInModal.classList.remove("hidden"); // Remove hidden class to show modal
-    });
-  }
-});
-  

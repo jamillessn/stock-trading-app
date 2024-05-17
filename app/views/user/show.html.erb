@@ -1,11 +1,20 @@
-<%= form_with model: @user, url: update_balance_path(@user), method: :post do |form| %>
-  <div class="mb-4 center">
-    <%= form.label "Current Balance:", class: "block text-sm font-medium text-gray-700 dark:text-gray-400" %>
-    <%= form.label @user.default_balance, class: "block text-sm font-medium text-gray-700 dark:text-gray-400" %> <br>
+<h2> Add Balance </h2>
+<%= form_with model: @user, url: update_balance_path(@user), method: :post, html: { class: "form-basic" } do |form| %>
+  <div class="mb-4 block justify-center">
     <%= form.label "Enter Amount:", class: "block text-sm font-medium text-gray-700 dark:text-gray-400" %>
-    <%= form.number_field :cash_in_amount, class: "block text-sm font-medium text-gray-700 dark:text-gray-400" %>
+    <%= form.number_field :cash_in_amount, class: "block text-sm font-medium" %>
   </div>
+
   <div class="mb-4">
-    <%= form.submit "Cash In", class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
+    <%= form.submit "Confirm", class: "px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50" %>
   </div>
+
+  
+
+   <div class="mb-4">
+    <%= link_to "Back to Portfolio Page", user_portfolio_path(@user), class: "px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50" %>  
+  </div>
+
 <% end %>
+
+ 

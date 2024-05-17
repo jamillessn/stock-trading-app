@@ -78,7 +78,6 @@ class StocksController < ApplicationController
 
     holding = @user.holdings.find_by(stock: @stock)
 
-    if holding && holding.quantity >= quantity && quantity >= 1
       ActiveRecord::Base.transaction do
         @user.balance += total_value
         @user.save!
@@ -96,16 +95,14 @@ class StocksController < ApplicationController
         )
       end
       flash[:success] = "You sold #{quantity} shares of #{@stock.symbol}"
-    else
-       # ... error handling (from previous example) ...
-    end
+  
     redirect_to stocks_path # Redirect in all cases
   end 
 
   private
 
   def set_iex_client
-    @iex_client = IEX::Api::Client.new(publishable_token: 'sk_85666730572d4953ad81b471373cf4ce')
+    @iex_client = IEX::Api::Client.new(publishable_token: 'sk_619859abf5064fdca965e6d5ad0b9aac')
   end
 
   def set_user

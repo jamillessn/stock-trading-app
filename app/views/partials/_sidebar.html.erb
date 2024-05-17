@@ -13,7 +13,7 @@
 
     <h3 class="text-lg text-gray-400"> Balance: <%= current_user.default_balance %> </h3>
     
-    <%= link_to "Cash In", user_show_path(@user), class: "cash-in-btn" %>
+    <%= button_to "Cash In", user_show_path(@user), class: "cash-in-btn", method: :get %>
         
     <% end %>
 			
