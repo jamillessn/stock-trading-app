@@ -7,7 +7,7 @@ Rails.application.configure do
    config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
    # Set delivery method to :letter_opener_web
-   config.action_mailer.delivery_method = :letter_opener
+   config.action_mailer.delivery_method = :letter_opener_web
  
    # Perform email delivery (i.e., open emails in the browser)
    config.action_mailer.perform_deliveries = true
@@ -21,7 +21,7 @@ Rails.application.configure do
   LetterOpener.configure do |config|
     # To overrider the location for message storage.
     # Default value is `tmp/letter_opener`
-    config.location = Rails.root.join('tmp', 'my_mails')
+    config.location = Rails.root.join('tmp', 'letter_opener')
   
     # To render only the message body, without any metadata or extra containers or styling.
     # Default value is `:default` that renders styled message with showing useful metadata.

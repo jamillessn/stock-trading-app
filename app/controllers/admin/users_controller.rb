@@ -34,7 +34,7 @@ class Admin::UsersController < ApplicationController
       @user.approved = true
   
       if @user.save
-        UserMailer.with(user: @user).welcome_email.deliver_later
+        UserMailer.with(user: @user.email).welcome_email.deliver_now!
         redirect_to admin_users_path
         flash[:notice] = "User #{@user.email} successfully created."
       else
@@ -47,15 +47,18 @@ class Admin::UsersController < ApplicationController
     end
   
     def approve_user
-      user = User.find(params[:id])
-      user.approved = true
-      if user.save
-        UserMailer.with(user: user).approval_email.deliver_later
-        flash[:notice] = "#{user.email} approved"
+      @user = User.find(params[:id])
+      @user.approved = true
+      if @user.save
+        if @user.email.present?
+          UserMailer.approval_email(@user).deliver_now!
+          flash[:notice] = "#{@user.email} approved"
+        else
+          flash[:alert] = "User email not found. Approval failed."
+        end
       else
-        flash[:alert] = "#{user.email} approval failure"
+        flash[:alert] = "#{@user.email} approval failure"
       end
-  
       redirect_to admin_users_path
     end
   
