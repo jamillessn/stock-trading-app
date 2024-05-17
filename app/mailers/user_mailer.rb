@@ -8,7 +8,8 @@ class UserMailer < ApplicationMailer
     end
 
     def approval_email(user)
-        @user = params[:user]
-        mail(to: @user, subject: 'Your account has been approved')
+        @user = user
+        @email = user.email
+        mail(to: user, subject: 'Your account has been approved')
       end
 end
