@@ -25,9 +25,13 @@ Rails.application.routes.draw do
   resources :stocks 
   resources :transactions
 
+  
+
   get '/:user_id/portfolio', to: 'portfolios#show', as: 'user_portfolio'
   get '/:user_id/transactions', to: 'transactions#index'
   get '/:user_id/show', to: 'user#show', as: 'user_show'
-  post '/:user_id/show', to: 'user#update_balance', as: 'update_balance'
+  get '/:user_id/sell/:symbol', to: 'portfolios#sell', as: 'sell'
+  post '/:user_id/sell_stock/:symbol', to: 'portfolios#sell_stock', as: 'sell_stock'
+  post '/:user_id/update_balance', to:'user#update_balance', as: 'update_balance'
   
 end

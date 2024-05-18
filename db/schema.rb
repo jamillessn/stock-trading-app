@@ -14,16 +14,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_20_194544) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "holdings", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "stock_id", null: false
-    t.integer "quantity", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["stock_id"], name: "index_holdings_on_stock_id"
-    t.index ["user_id"], name: "index_holdings_on_user_id"
-  end
-
   create_table "stocks", force: :cascade do |t|
     t.string "symbol"
     t.string "company_name"
@@ -72,9 +62,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_20_194544) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "holdings", "stocks"
-  add_foreign_key "holdings", "users"
   add_foreign_key "stocks", "users"
-  add_foreign_key "transactions", "stocks"
   add_foreign_key "transactions", "users"
 end

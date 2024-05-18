@@ -31,81 +31,45 @@ class StocksController < ApplicationController
     symbol = params[:symbol]
     company_name = params[:company_name]
     quantity = params[:quantity].to_i
-
+  
     price = @iex_client.quote(symbol).latest_price  # Fetch latest price
     total_cost = price.round(2) * quantity
-
+  
     # Check if the user has enough balance
     if @user.default_balance < total_cost
-      
-        redirect_to user_portfolio_path(@user.id)
-        flash[:error] = 'Insufficient funds to complete this transaction'
-        return
+      flash[:alert] = 'Insufficient funds to complete this transaction.'
     else
-        ActiveRecord::Base.transaction do
-          stock = @user.stocks.find_or_initialize_by(symbol: symbol)
-          stock.company_name = company_name
-          stock.shares = (stock.shares || 0) + quantity
-          stock.cost_price = price
-          stock.save!
-
-          Transaction.create!(
-              action_type: 'Buy',
-              company_name: company_name,
-              shares: quantity,
-              cost_price: total_cost,
-              user: @user,
-              stock: stock,
-              price: price
-          )
-          
-          @user.update!(default_balance: @user.default_balance =- total_cost)
-          flash[:notice] = "Stock bought successfully."
-
-          end
+      ActiveRecord::Base.transaction do
+        stock = @user.stocks.find_or_initialize_by(symbol: symbol)
+        stock.company_name = company_name
+        stock.shares = (stock.shares || 0) + quantity
+        stock.cost_price = price
+        stock.save!
+  
+        Transaction.create!(
+          action_type: 'Buy',
+          company_name: company_name,
+          shares: quantity,
+          cost_price: total_cost,
+          user: @user,
+          stock: stock,
+          price: price
+        )
+        
+        @user.update!(default_balance: @user.default_balance - total_cost)
+        flash[:notice] = "Stock bought successfully."
       end
-
+    end
+  
     redirect_to user_portfolio_path(@user.id)
   end
 
-  def sell
-    @stock = Stock.find(params[:id])
-    @user = current_user
 
-    quantity = params[:quantity].to_i
-    latest_price = @iex_client.quote(@stock.symbol).latest_price
-    total_value = quantity * latest_price
-
-    holding = @user.holdings.find_by(stock: @stock)
-
-    if holding && holding.quantity >= quantity && quantity >= 1
-      ActiveRecord::Base.transaction do
-        @user.balance += total_value
-        @user.save!
-
-        holding.quantity -= quantity
-        holding.destroy! if holding.quantity == 0 # Delete holding if no shares left
-        holding.save!
-
-        Transaction.create!(
-          trader: @user,
-          stock: @stock,
-          action_type: 'Sell',
-          quantity: quantity,
-          price: latest_price
-        )
-      end
-      flash[:success] = "You sold #{quantity} shares of #{@stock.symbol}"
-    else
-       # ... error handling (from previous example) ...
-    end
-    redirect_to stocks_path # Redirect in all cases
-  end 
 
   private
 
   def set_iex_client
-    @iex_client = IEX::Api::Client.new(publishable_token: 'sk_85666730572d4953ad81b471373cf4ce')
+    @iex_client = IEX::Api::Client.new(publishable_token: 'sk_619859abf5064fdca965e6d5ad0b9aac')
   end
 
   def set_user

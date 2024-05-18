@@ -3,7 +3,7 @@
 <table>
   <thead>
     <tr>
-        <th> User ID </th>
+      <th> User ID </th>
       <th>Transaction ID</th>
       <th>Stock Symbol</th>
       <th>Shares</th>
@@ -16,7 +16,7 @@
       <tr>
         <td><%= transaction.user_id %></td>
         <td><%= transaction.id %></td>
-        <td><%= transaction.stock_symbol %></td>
+        <td><%= transaction.company_name %></td>
         <td><%= transaction.shares %></td>
         <td><%= transaction.action_type.capitalize %></td>
         <td><%= transaction.created_at.strftime("%B %d, %Y") %></td>
