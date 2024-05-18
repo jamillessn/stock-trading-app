@@ -327,6 +327,24 @@ input:focus {
   color: #666;
 }
 
+/*Stock Sell Form*/
+.stock-sell-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stock-sell-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
 /* Buffer */
 
 .toast {

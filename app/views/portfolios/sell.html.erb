@@ -1,10 +1,13 @@
-<h2>Sell <%= @stock.company_name %></h2>
-<p>Symbol: <%= @stock.symbol %></p>
-<p>Current Price: $<%= @latest_price %></p>
+<div class="stock-sell-container">
+  <h2>Sell</h2>
+  <h3><%= @stock.company_name %></h3>
+  <p><strong>Symbol:</strong> <%= @stock.symbol %></p>
 
-<%= form_with(url: sell_stock_path(symbol: @stock.symbol, company_name: @stock.company_name), method: "post") do |form| %>
-  <%= form.label :quantity, "Quantity" %>
-  <%= form.number_field :quantity %>
+  <%= form_with(url: sell_stock_path(symbol: @stock.symbol, company_name: @stock.company_name), method: "post", html: { class: "stock-sell-form" }) do |form| %>
+    <div class="form-group">
+      <%= form.label :quantity, "Quantity" %>
+      <%= form.number_field :quantity %>
+    </div>
 
-  <%= form.submit "Sell" %>
+  <%= form.submit "Sell", class:"px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50" %>
 <% end %>

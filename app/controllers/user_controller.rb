@@ -15,7 +15,7 @@ class UserController < ApplicationController
       @user.save!
     end
   
-    flash[:notice] = "Successfully added #{'%.2f' % amount} to your balance."
+    flash[:notice] = "Successfully added $#{'%.2f' % amount} to your balance."
     redirect_to user_portfolio_path
   end
 
