@@ -24,12 +24,12 @@ Things you may want to cover:
 * ...
 
 
-GEMS
-Devise
-TailwindCSS
-IEX Ruby Client
-Httparty
-Letter Opener
-Letter Opener Web
-Inline SVG
-Redis rails #for cache
+# GEMS used:
+*Devise
+*TailwindCSS
+*IEX Ruby Client
+*Httparty
+*Letter Opener
+*Letter Opener Web
+*Inline SVG
+*Redis rails #for cache
