@@ -1,35 +1,50 @@
-# README
+##### Prerequisites
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The setups steps expect following tools installed on the system.
 
-Things you may want to cover:
+- Github
+- Ruby [3.3.0](https://github.com/ruby/ruby/releases/tag/v3_3_2)
+- Rails [7.1.3](https://github.com/rails/rails/releases/tag/v7.1.3)
 
-* Ruby version
+##### 1. Check out the repository
 
-* System dependencies
+```bash
+git clone git@github.com:jamillessn/stock-trading-app.git
+```
 
-* Configuration
+##### 2. Create database.yml file
 
-* Database creation
+Copy the sample database.yml file and edit the database configuration as required.
 
-* Database initialization
+```bash
+cp config/database.yml.sample config/database.yml
+```
 
-* How to run the test suite
+##### 3. Create and setup the database
 
-* Services (job queues, cache servers, search engines, etc.)
+Run the following commands to create and setup the database.
 
-* Deployment instructions
+```ruby
+bundle exec rails db:create
+bundle exec rails db:setup
+```
 
-* ...
+##### 4. Start the Rails server
 
+You can start the rails server using the command given below.
+
+```ruby
+bundle exec rails s
+```
+
+And now you can visit the site with the URL http://localhost:3000
 
 # GEMS used:
-*Devise
-*TailwindCSS
-*IEX Ruby Client
-*Httparty
-*Letter Opener
-*Letter Opener Web
-*Inline SVG
-*Redis rails #for cache
+* Devise
+* TailwindCSS
+* IEX Ruby Client
+* Httparty
+* Letter Opener
+* Letter Opener Web
+* Inline SVG
+* Redis rails #for cache
